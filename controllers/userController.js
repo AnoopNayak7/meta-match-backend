@@ -45,9 +45,14 @@ const userCtrl = {
         },
       });
 
-      await newUser.save();
+      const userData = await newUser.save();
 
-      res.json({ msg: "Register successfull" });
+      res.json({ msg: "Register successfull", data: [
+        { 
+          id: userData._id,
+          name: userData.name,
+          email: userData.email,
+         }] });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
