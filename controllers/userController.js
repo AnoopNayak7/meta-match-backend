@@ -80,7 +80,18 @@ const userCtrl = {
         maxAge: 7 * 24 * 60 * 60 * 1000, //7 days
       });
       console.log(refresh_token);
-      res.json({ msg: "Login sucessfull..!!" });
+      res.json({
+        success: true,
+        msg: "Login sucessfull..!!",
+        data: {
+          refresh_token: refresh_token,
+          id: admin._id,
+          name: admin.name,
+          email: admin.email,
+          latitude: admin.latitude,
+          longitude: admin.longitude,
+        },
+      });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }
@@ -88,7 +99,7 @@ const userCtrl = {
 
   getAccessToken: (req, res) => {
     try {
-      const rf_token = req.cookies.refreshtoken;
+      const { rf_token } = req.body;
 
       if (!rf_token) return res.status(400).json({ msg: "Please login now!" });
 
@@ -96,7 +107,7 @@ const userCtrl = {
         if (err) return res.status(400).json({ msg: "Please login now!" });
 
         const access_token = createAccessToken({ id: admin.id });
-        res.json({ access_token });
+        res.json({ success:true, access_token });
         // console.log(user)
       });
     } catch (err) {
